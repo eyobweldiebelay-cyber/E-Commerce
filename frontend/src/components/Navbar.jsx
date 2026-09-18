@@ -24,50 +24,47 @@ function Navbar() {
     <header className="navbar">
       <div className="navbar-container">
 
+        {/* Logo */}
         <Link to="/" className="logo">
           E-Shop
         </Link>
 
+        {/* Main Navigation */}
         <nav className="nav-links">
           <Link to="/">Home</Link>
           <Link to="/products">Products</Link>
-          <Link to="/products?category=men">Men</Link>
-          <Link to="/products?category=women">Women</Link>
-          <Link to="/products?category=electronics">
-            Electronics
-          </Link>
         </nav>
 
+        {/* Right Side */}
         <div className="nav-actions">
 
+          {/* Search */}
           <Link to="/products" className="nav-icon">
             <Search size={21} />
           </Link>
 
+          {/* Logged-in Customer */}
           {user && (
-            <Link to="/favorites" className="nav-icon">
-              <Heart size={21} />
-            </Link>
-          )}
-
-          {user && (
-            <Link to="/cart" className="nav-icon cart-icon">
-              <ShoppingCart size={21} />
-
-              {itemCount > 0 && (
-                <span className="cart-count">
-                  {itemCount}
-                </span>
-              )}
-            </Link>
-          )}
-
-          {user ? (
             <>
+              <Link to="/favorites" className="nav-icon">
+                <Heart size={21} />
+              </Link>
+
+              <Link to="/cart" className="nav-icon cart-icon">
+                <ShoppingCart size={21} />
+
+                {itemCount > 0 && (
+                  <span className="cart-count">
+                    {itemCount}
+                  </span>
+                )}
+              </Link>
+
               <Link to="/profile" className="nav-icon">
                 <User size={21} />
               </Link>
 
+              {/* Admin */}
               {user.role === 'admin' && (
                 <Link to="/admin/dashboard">
                   Admin
@@ -82,10 +79,17 @@ function Navbar() {
                 Logout
               </button>
             </>
-          ) : (
+          )}
+
+          {/* Guest */}
+          {!user && (
             <>
               <Link to="/login">Login</Link>
-              <Link to="/register" className="register-link">
+
+              <Link
+                to="/register"
+                className="register-link"
+              >
                 Register
               </Link>
             </>
