@@ -47,7 +47,7 @@ function App() {
 
               <Route path="/" element={<Home />} />
 
-              <Route path="/products" element={<Products />}/>
+              <Route path="/products" element={<Products />} />
 
               <Route
                 path="/products/:id"
@@ -79,19 +79,21 @@ function App() {
                   element={<Checkout />}
                 />
 
+                {/* FIXED */}
                 <Route
-                  path="/payment"
+                  path="/payment/:orderId"
                   element={<Payment />}
                 />
 
+                {/* FIXED */}
                 <Route
-                  path="/otp-verification"
+                  path="/otp-verification/:paymentId"
                   element={<OTPVerification />}
                 />
 
                 <Route
-                  path="/order-confirmation"
-                  element={<OrderConfirmation />}
+               path="/order-confirmation/:orderId"
+               element={<OrderConfirmation />}
                 />
 
                 <Route
@@ -163,7 +165,7 @@ function App() {
 }
 
 export default App;
-/*
+
 /*
 Jakemy JM-8151
 
