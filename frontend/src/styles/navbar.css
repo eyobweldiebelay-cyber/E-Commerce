@@ -1,6 +1,6 @@
 .navbar {
   width: 100%;
-  background: #ffffff;
+  background: hsl(0, 2%, 59%);
   border-bottom: 1px solid #e5e7eb;
   position: sticky;
   top: 0;
@@ -126,4 +126,319 @@
 
 .register-link:hover {
   background: #1d4ed8 !important;
+}
+/* =========================================
+   SEARCH WRAPPER
+========================================= */
+
+.navbar-search-wrapper {
+  position: relative;
+}
+
+
+/* =========================================
+   SEARCH FORM
+========================================= */
+
+.navbar-search-form {
+  width: 390px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+
+  background: #ffffff;
+
+  border: 1px solid #d9dee8;
+  border-radius: 10px;
+
+  overflow: hidden;
+
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.navbar-search-form input {
+  flex: 1;
+
+  height: 100%;
+
+  border: none;
+  outline: none;
+
+  padding: 0 15px;
+
+  font-size: 15px;
+
+  color: #172033;
+
+  background: transparent;
+}
+
+.navbar-search-form input::placeholder {
+  color: #8b95a7;
+}
+
+.navbar-search-form button {
+  width: 52px;
+  height: 100%;
+
+  border: none;
+
+  background: #2f66e5;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar-search-form button:hover {
+  background: #2457c9;
+}
+
+
+/* =========================================
+   SEARCH RESULTS DROPDOWN
+========================================= */
+
+.search-results-dropdown {
+  position: absolute;
+
+  top: 58px;
+  left: 0;
+
+  width: 390px;
+
+  background: white;
+
+  border: 1px solid #e1e5eb;
+
+  border-radius: 12px;
+
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.14);
+
+  overflow: hidden;
+
+  z-index: 9999;
+}
+
+
+/* =========================================
+   RESULTS TITLE
+========================================= */
+
+.search-results-title {
+  padding: 13px 16px 9px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+
+  color: #7a8495;
+
+  border-bottom: 1px solid #edf0f4;
+}
+
+
+/* =========================================
+   PRODUCT SEARCH CARD
+========================================= */
+
+.search-product-card {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 12px 14px;
+
+  border: none;
+
+  border-bottom: 1px solid #edf0f4;
+
+  background: white;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.search-product-card:hover {
+  background: #f5f8ff;
+}
+
+
+/* =========================================
+   SEARCH PRODUCT IMAGE
+========================================= */
+
+.search-product-image {
+  width: 65px;
+  height: 65px;
+
+  flex-shrink: 0;
+
+  border-radius: 8px;
+
+  overflow: hidden;
+
+  background: #f1f3f6;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.search-product-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.search-no-image {
+  font-size: 10px;
+  color: #8b95a7;
+  text-align: center;
+}
+
+
+/* =========================================
+   SEARCH PRODUCT INFO
+========================================= */
+
+.search-product-info {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.search-product-info h4 {
+  margin: 0;
+
+  color: #172033;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+.search-product-info p {
+  margin: 0;
+
+  color: #7a8495;
+
+  font-size: 12px;
+}
+
+.search-product-info strong {
+  color: #2f66e5;
+
+  font-size: 14px;
+}
+
+
+/* =========================================
+   SEARCH MESSAGE
+========================================= */
+
+.search-message {
+  min-height: 100px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  color: #7a8495;
+
+  font-size: 14px;
+}
+
+
+/* =========================================
+   VIEW ALL
+========================================= */
+
+.search-view-all {
+  width: 100%;
+
+  padding: 13px;
+
+  border: none;
+
+  background: #f7f9fc;
+
+  color: #2f66e5;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.search-view-all:hover {
+  background: #edf3ff;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 900px) {
+
+  .navbar-search-wrapper {
+    position: static;
+  }
+
+  .navbar-search-form {
+    position: absolute;
+
+    top: 70px;
+    left: 20px;
+    right: 20px;
+
+    width: auto;
+
+    z-index: 9999;
+  }
+
+  .search-results-dropdown {
+    position: absolute;
+
+    top: 125px;
+
+    left: 20px;
+    right: 20px;
+
+    width: auto;
+  }
+
 }
