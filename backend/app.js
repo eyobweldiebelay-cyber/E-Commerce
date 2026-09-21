@@ -44,6 +44,9 @@ app.use('/api/cart', cartRoute);
 app.use('/api/favorites', favoriteRoute);
 app.use('/api/orders', orderRoute);
 app.use('/api/payments', paymentRoute);
+//getAll coustmer or once
+const userRoute = require('./routes/userRoute');
+app.use('/api/users', userRoute);
 
 
 module.exports = app;
