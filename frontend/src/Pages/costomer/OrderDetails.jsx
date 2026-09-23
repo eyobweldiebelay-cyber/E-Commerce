@@ -138,11 +138,9 @@ function OrderDetails() {
         <div className="order-details-header">
 
           <div>
-            <p>Order Details</p>
-
-            <h1>
+            <b>
               Order #{order.id}
-            </h1>
+            </b>
           </div>
 
           <span
@@ -232,7 +230,11 @@ function OrderDetails() {
 
                       {item.image ? (
                         <img
-                          src={item.image}
+                          src={
+                            item.image.startsWith('http')
+                              ? item.image
+                              : `https://e-commerce-q8od.onrender.com/uploads/products/${item.image}`
+                          }
                           alt={item.name}
                         />
                       ) : (
@@ -253,11 +255,11 @@ function OrderDetails() {
                         Quantity: {item.quantity}
                       </p>
 
-                      <p>
+                      <b>
                         Price: {
                           Number(item.price).toFixed(2)
                         } ETB
-                      </p>
+                      </b>
 
                     </div>
 

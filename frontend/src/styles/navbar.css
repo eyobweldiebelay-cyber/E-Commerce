@@ -49,7 +49,7 @@
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
 }
 
 .nav-actions a {
@@ -72,7 +72,7 @@
 }
 
 .nav-icon:hover {
-  color: #2563eb !important;
+  color: hwb(62 15% 8%) !important;
 }
 
 .cart-icon {
@@ -120,7 +120,7 @@
   padding: 9px 16px;
   border-radius: 7px;
 
-  background: #2563eb !important;
+  background: hsl(106, 83%, 53%) !important;
   color: white !important;
 }
 
@@ -133,6 +133,7 @@
 
 .navbar-search-wrapper {
   position: relative;
+ 
 }
 
 
@@ -161,6 +162,7 @@
   flex: 1;
 
   height: 100%;
+
 
   border: none;
   outline: none;

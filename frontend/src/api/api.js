@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8800/api'
+  baseURL: 'https://e-commerce-q8od.onrender.com/api'
 });
 
 api.interceptors.request.use(

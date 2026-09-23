@@ -1,60 +1,64 @@
 import { Link } from 'react-router-dom';
 import { ShoppingCart } from 'lucide-react';
-import { useCart } from '../context/CartContext';
 
 function ProductCard({ product }) {
-  const { addToCart } = useCart();
-
-  const handleAddToCart = async () => {
-    try {
-      await addToCart(product.id, 1);
-      alert('Product added to cart');
-    } catch (error) {
-      console.error('Failed to add product:', error);
-      alert('Please login to add products to cart');
-    }
-  };
+  const price = Number(product.price || 2300);
 
   return (
     <div className="product-card">
 
-      <Link to={`/products/${product.id}`} className="product-image-link">
-        <div className="product-image">
-          {product.image ? (
-            <img
-              src={product.image}
-              alt={product.name}
-            />
-          ) : (
-            <div className="no-image">
-              No Image
-            </div>
-          )}
-        </div>
+      {/* Product Image */}
+      <Link
+        to={`/products/${product.id}`}
+        className="product-card-image"
+      >
+        {product.image ? (
+          <img
+            src={
+              product.image.startsWith('http')
+                ? product.image
+                : `https://e-commerce-q8od.onrender.com/uploads/products/${product.image}`
+            }
+            alt={product.name}
+          />
+        ) : (
+          <div className="product-no-image">
+            No Image
+          </div>
+        )}
       </Link>
 
-      <div className="product-card-content">
+      {/* Product Information */}
+      <div className="product-card-body">
 
-        <h3>
+        <h3 className="product-card-name">
           {product.name}
         </h3>
 
-        <p className="product-price">
-          ${Number(product.price).toFixed(2)}
-        </p>
+        <div className="product-rating">
+          <span>★</span>
+          <span>★</span>
+          <span>★</span>
+          <span>★</span>
+          <span>★</span>
+          <small>(5.0)</small>
+        </div>
+
+        <div className="product-card-price">
+          {price.toFixed(2)} ETB
+        </div>
 
         <div className="product-card-actions">
 
           <Link
             to={`/products/${product.id}`}
-            className="view-product-button"
+            className="product-details-button"
           >
             View Details
           </Link>
 
           <button
-            className="add-cart-button"
-            onClick={handleAddToCart}
+            className="product-add-button"
           >
             <ShoppingCart size={17} />
             Add

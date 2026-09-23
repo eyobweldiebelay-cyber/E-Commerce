@@ -1,21 +1,22 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 
 import api from '../api/api';
 import ProductCard from '../components/ProductCard';
 
 function Products() {
+  const [searchParams] = useSearchParams();
+
+  const category = searchParams.get('category') || '';
+  const search = searchParams.get('search') || '';
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const [searchParams] = useSearchParams();
-
-  const category = searchParams.get('category');
-
   useEffect(() => {
     loadProducts();
-  }, [category]);
+  }, [category, search]);
 
   const loadProducts = async () => {
     try {
@@ -24,87 +25,182 @@ function Products() {
 
       const response = await api.get('/products');
 
-      const data = response.data.products || response.data;
+      const productData =
+        response.data.products ||
+        response.data ||
+        [];
 
-      setProducts(Array.isArray(data) ? data : []);
+      if (!Array.isArray(productData)) {
+        setProducts([]);
+        return;
+      }
+
+      let filteredProducts = productData;
+
+      // CATEGORY FILTER
+      if (category) {
+        filteredProducts = filteredProducts.filter((product) =>
+          String(product.category_name || '')
+            .toLowerCase()
+            .includes(category.toLowerCase())
+        );
+      }
+
+      // SEARCH FILTER
+      if (search) {
+        const searchValue = search.toLowerCase();
+
+        filteredProducts = filteredProducts.filter(
+          (product) => {
+
+            const productName =
+              String(product.name || '').toLowerCase();
+
+            const description =
+              String(product.description || '').toLowerCase();
+
+            const categoryName =
+              String(product.category_name || '').toLowerCase();
+
+            return (
+              productName.includes(searchValue) ||
+              description.includes(searchValue) ||
+              categoryName.includes(searchValue)
+            );
+          }
+        );
+      }
+
+      setProducts(filteredProducts);
+
     } catch (error) {
-      console.error('Failed to load products:', error);
+      console.error(
+        'Failed to load products:',
+        error
+      );
 
       setError(
         error.response?.data?.message ||
-        'Failed to load products'
+        'Failed to load products.'
       );
     } finally {
       setLoading(false);
     }
   };
 
-  const filteredProducts = category
-    ? products.filter((product) => {
-        const productCategory =
-          product.category_name ||
-          product.category ||
-          product.category_slug;
+  // --------------------------------
+  // PAGE TITLE
+  // --------------------------------
 
-        return String(productCategory).toLowerCase() ===
-          String(category).toLowerCase();
-      })
-    : products;
+  const getPageTitle = () => {
+
+    if (search) {
+      return `Search Results`;
+    }
+
+    if (category) {
+      return category;
+    }
+
+    return 'All Products';
+  };
 
   return (
     <main className="products-page">
 
       <div className="container">
 
+        {/* PAGE HEADER */}
         <div className="products-header">
 
           <div>
+
+            <span className="products-label">
+              E-SHOP COLLECTION
+            </span>
+
             <h1>
-              {category
-                ? `${category} Products`
-                : 'All Products'}
+              {getPageTitle()}
             </h1>
 
             <p>
-              Discover products you will love.
+              {search
+                ? `Products matching "${search}"`
+                : category
+                  ? `Explore our ${category.toLowerCase()} collection.`
+                  : 'Discover products for you.'}
             </p>
+
+          </div>
+
+          <div className="products-count">
+            {products.length}{' '}
+            {products.length === 1
+              ? 'Product'
+              : 'Products'}
           </div>
 
         </div>
 
+        {/* LOADING */}
         {loading && (
           <div className="page-loading">
             Loading products...
           </div>
         )}
 
+        {/* ERROR */}
         {!loading && error && (
           <div className="products-error">
             {error}
           </div>
         )}
 
-        {!loading && !error && filteredProducts.length === 0 && (
-          <div className="empty-products">
-            <h2>No products found</h2>
-            <p>
-              There are no products available in this category.
-            </p>
-          </div>
-        )}
+        {/* EMPTY */}
+        {!loading &&
+          !error &&
+          products.length === 0 && (
 
-        {!loading && !error && filteredProducts.length > 0 && (
-          <div className="product-grid">
+            <div className="empty-products">
 
-            {filteredProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-              />
-            ))}
+              <h2>
+                No products found
+              </h2>
 
-          </div>
-        )}
+              <p>
+                {search
+                  ? `We couldn't find any products matching "${search}".`
+                  : 'There are no products available in this category.'}
+              </p>
+
+              <Link
+                to="/products"
+                className="view-all-products-button"
+              >
+                View All Products
+              </Link>
+
+            </div>
+          )}
+
+        {/* PRODUCTS */}
+        {!loading &&
+          !error &&
+          products.length > 0 && (
+
+            <div className="products-grid">
+
+              {products.map((product) => (
+
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                />
+
+              ))}
+
+            </div>
+          )}
 
       </div>
 

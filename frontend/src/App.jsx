@@ -25,12 +25,16 @@ import Favorites from "./Pages/costomer/Favorites";
 import Profile from "./Pages/costomer/Profile";
 
 /* Admin Pages */
+import AdminLayout from "./layout/AdminLayout";
 import AdminDashboard from "./Pages/admin/Dashboard";
 import AdminProducts from "./Pages/admin/Products";
 import AdminCategories from "./Pages/admin/Categories";
 import AdminCustomers from "./Pages/admin/Costomer";
 import AdminOrders from "./Pages/admin/Order";
 import AdminPayments from "./Pages/admin/Payment";
+import Footer from "./components/Footer";
+
+
 
 function App() {
   return (
@@ -118,44 +122,21 @@ function App() {
 
               </Route>
 
+<Route element={<ProtectedRoute role="admin" />}>
+    <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<AdminDashboard />} />
+        <Route path="products" element={<AdminProducts />} />
+        <Route path="categories" element={<AdminCategories />} />
+        <Route path="customers" element={<AdminCustomers />} />
+        <Route path="orders" element={<AdminOrders />} />
+        <Route path="payments" element={<AdminPayments />} />
+    </Route>
+</Route>
 
-              {/* Admin pages */}
-
-              <Route element={<ProtectedRoute role="admin" />}>
-
-                <Route
-                  path="/admin/dashboard"
-                  element={<AdminDashboard />}
-                />
-
-                <Route
-                  path="/admin/products"
-                  element={<AdminProducts />}
-                />
-
-                <Route
-                  path="/admin/categories"
-                  element={<AdminCategories />}
-                />
-
-                <Route
-                  path="/admin/customers"
-                  element={<AdminCustomers />}
-                />
-
-                <Route
-                  path="/admin/orders"
-                  element={<AdminOrders />}
-                />
-
-                <Route
-                  path="/admin/payments"
-                  element={<AdminPayments />}
-                />
-
-              </Route>
+              
 
             </Routes>
+        <Footer/>
           </main>
 
         </CartProvider>

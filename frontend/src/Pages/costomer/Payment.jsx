@@ -64,7 +64,7 @@ function Payment() {
             <h1>Payment</h1>
 
             <p>
-              Choose your preferred payment method.
+              Choose your preferred payment method For Buy.
             </p>
           </div>
 

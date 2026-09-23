@@ -77,7 +77,7 @@ function AdminSidebar() {
                         <NavLink
                             key={item.name}
                             to={item.path}
-                            end={item.path === '/admin/dashboard'}
+                            end={item.path === '/admin'}
                             className={({ isActive }) =>
                                 isActive
                                     ? 'admin-nav-link active'

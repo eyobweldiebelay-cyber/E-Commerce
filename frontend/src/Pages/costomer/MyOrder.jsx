@@ -74,10 +74,8 @@ function MyOrders() {
 
         <div className="orders-header">
           <div>
-            <h1>My Orders</h1>
-            <p>
-              View and manage your orders.
-            </p>
+            <h2>I have Ordered This Items </h2>
+            
           </div>
         </div>
 

@@ -109,10 +109,8 @@ function Checkout() {
       <div className="container">
 
         <div className="checkout-header">
-          <h1>Checkout</h1>
-          <p>
-            Enter your delivery information.
-          </p>
+          <h2>Checkout</h2>
+        
         </div>
 
         {error && (

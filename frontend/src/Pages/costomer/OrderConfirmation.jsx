@@ -101,13 +101,13 @@ function OrderConfirmation() {
 
           <h1>Order Confirmed!</h1>
 
-          <p className="confirmation-message">
+          <strong className="confirmation-message">
             Your payment was successful and your
             order has been placed successfully.
-          </p>
+          </strong>
 
           <div className="order-number">
-            <span>Order Number</span>
+            <b>Order Number</b>
             <strong>#{order.id}</strong>
           </div>
 
@@ -115,7 +115,7 @@ function OrderConfirmation() {
             <Package size={20} />
 
             <div>
-              <span>Order Status</span>
+              <b>Order Status</b>
               <strong>{order.status}</strong>
             </div>
           </div>
@@ -124,7 +124,7 @@ function OrderConfirmation() {
 
           <div className="confirmation-section">
 
-            <h2>Delivery Information</h2>
+            <b>Delivery Information</b>
 
             <div className="delivery-info">
 
@@ -132,7 +132,7 @@ function OrderConfirmation() {
                 <MapPin size={19} />
 
                 <div>
-                  <span>Address</span>
+                  <b>Address</b>
                   <strong>{order.address}</strong>
                 </div>
               </div>
@@ -141,7 +141,7 @@ function OrderConfirmation() {
                 <Phone size={19} />
 
                 <div>
-                  <span>Phone</span>
+                  <b>Phone</b>
                   <strong>{order.phone}</strong>
                 </div>
               </div>
@@ -168,7 +168,11 @@ function OrderConfirmation() {
 
                     {item.image ? (
                       <img
-                        src={item.image}
+                        src={
+                          item.image.startsWith('http')
+                            ? item.image
+                            : `https://e-commerce-q8od.onrender.com/uploads/products/${item.image}`
+                        }
                         alt={item.name}
                       />
                     ) : (
@@ -181,9 +185,9 @@ function OrderConfirmation() {
 
                     <h3>{item.name}</h3>
 
-                    <p>
+                    <b>
                       Quantity: {item.quantity}
-                    </p>
+                    </b>
 
                   </div>
 
@@ -203,17 +207,17 @@ function OrderConfirmation() {
           <div className="confirmation-summary">
 
             <div>
-              <span>Subtotal</span>
-              <span>
+              <strong>Subtotal</strong>
+              <b>
                 {Number(order.subtotal).toFixed(2)} ETB
-              </span>
+              </b>
             </div>
 
             <div>
-              <span>Delivery</span>
-              <span>
+              <strong>Delivery</strong>
+              <b>
                 {Number(order.delivery_fee).toFixed(2)} ETB
-              </span>
+              </b>
             </div>
 
             <div className="confirmation-total">

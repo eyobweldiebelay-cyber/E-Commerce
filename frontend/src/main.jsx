@@ -14,7 +14,8 @@ import './styles/product.css'
 import './styles/cart.css'
 import './styles/dashboard.css'
 import './styles/responsive.css'
-
+import './styles/carousel.css'
+import './styles/footer.css'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>

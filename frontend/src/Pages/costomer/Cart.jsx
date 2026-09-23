@@ -140,7 +140,6 @@ function Cart() {
 
         </div>
 
-
         {/* =========================
             CART LAYOUT
         ========================== */}
@@ -156,19 +155,19 @@ function Cart() {
             {cart.items.map((item) => {
 
               /*
-                Database normally contains:
+                Database:
 
                 item.image = "jacket.jpg"
 
-                Browser needs:
+                Browser:
 
-                http://localhost:8800/uploads/products/jacket.jpg
+                https://e-commerce-q8od.onrender.com/uploads/products/jacket.jpg
               */
 
               const imageUrl = item.image
                 ? item.image.startsWith('http')
                   ? item.image
-                  : `http://localhost:8800/uploads/products/${item.image}`
+                  : `https://e-commerce-q8od.onrender.com/uploads/products/${item.image}`
                 : null;
 
               const price = Number(item.price || 0);
@@ -197,7 +196,6 @@ function Cart() {
                     )}
 
                   </div>
-
 
                   {/* PRODUCT INFORMATION */}
 
@@ -244,7 +242,6 @@ function Cart() {
 
                   </div>
 
-
                   {/* ITEM TOTAL */}
 
                   <div className="cart-item-total">
@@ -273,7 +270,6 @@ function Cart() {
 
           </div>
 
-
           {/* =========================
               ORDER SUMMARY
           ========================== */}
@@ -296,7 +292,6 @@ function Cart() {
 
             </div>
 
-
             <div className="summary-row">
 
               <span>
@@ -309,9 +304,7 @@ function Cart() {
 
             </div>
 
-
             <div className="summary-divider"></div>
-
 
             <div className="summary-total">
 
@@ -325,14 +318,12 @@ function Cart() {
 
             </div>
 
-
             <Link
               to="/checkout"
               className="checkout-button"
             >
               Checkout
             </Link>
-
 
             <Link
               to="/products"

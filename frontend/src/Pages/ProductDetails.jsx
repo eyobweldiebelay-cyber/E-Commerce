@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ShoppingCart, Heart, Minus, Plus } from 'lucide-react';
+import {
+  ShoppingCart,
+  Heart,
+  Minus,
+  Plus,
+  ArrowLeft,
+  Check
+} from 'lucide-react';
 
 import api from '../api/api';
 import { useCart } from '../context/CartContext';
@@ -14,13 +21,29 @@ function ProductDetails() {
 
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
-
+  const [isFavorite, setIsFavorite] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     loadProduct();
   }, [id]);
+
+  useEffect(() => {
+    if (!user) {
+      setIsFavorite(false);
+      return;
+    }
+
+    api
+      .get(`/favorites/check/${id}`)
+      .then((response) => {
+        setIsFavorite(response.data.isFavorite);
+      })
+      .catch((error) => {
+        console.error('Failed to check favorite:', error);
+      });
+  }, [id, user]);
 
   const loadProduct = async () => {
     try {
@@ -51,6 +74,32 @@ function ProductDetails() {
   const decreaseQuantity = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
+    }
+  };
+
+  const handleFavorite = async () => {
+    if (!user) {
+      alert('Please login to use favorites.');
+      return;
+    }
+
+    try {
+      if (isFavorite) {
+        await api.delete(`/favorites/${product.id}`);
+        setIsFavorite(false);
+      } else {
+        await api.post('/favorites', {
+          productId: product.id
+        });
+        setIsFavorite(true);
+      }
+    } catch (error) {
+      console.error('Favorite action failed:', error);
+
+      alert(
+        error.response?.data?.message ||
+        'Failed to update favorite.'
+      );
     }
   };
 
@@ -115,55 +164,107 @@ function ProductDetails() {
 
   const stock = Number(product.stock);
 
+  /*
+    Create the correct image URL.
+
+    Database:
+    product.image = "jacket.jpg"
+
+    Browser:
+    https://e-commerce-q8od.onrender.com/uploads/products/jacket.jpg
+  */
+  const imageUrl = product.image
+    ? product.image.startsWith('http')
+      ? product.image
+      : `https://e-commerce-q8od.onrender.com/uploads/products/${product.image}`
+    : null;
+
   return (
     <main className="product-details-page">
 
       <div className="container">
 
-        <div className="product-details">
+        {/* Back Button */}
+        <Link
+          to="/products"
+          className="product-back-link"
+        >
+          <ArrowLeft size={18} />
+          Back to Products
+        </Link>
 
-          {/* Product Image */}
-          <div className="product-details-image">
+        <div className="product-details-card">
 
-            {product.image ? (
-              <img
-                src={product.image}
-                alt={product.name}
-              />
-            ) : (
-              <div className="no-image">
-                No Image
-              </div>
-            )}
+          {/* =========================
+              LEFT - PRODUCT IMAGE
+          ========================== */}
+          <div className="product-details-gallery">
+
+            <div className="product-image-wrapper">
+
+              {imageUrl ? (
+                <img
+                  src={imageUrl}
+                  alt={product.name}
+                  className="product-details-main-image"
+                />
+              ) : (
+                <div className="product-details-no-image">
+                  No Image Available
+                </div>
+              )}
+
+            </div>
 
           </div>
 
-          {/* Product Information */}
+          {/* =========================
+              RIGHT - PRODUCT INFO
+          ========================== */}
           <div className="product-details-info">
 
-            <p className="product-category">
+            {/* Category */}
+            <span className="product-category-badge">
               {product.category_name || 'Product'}
-            </p>
+            </span>
 
-            <h1>{product.name}</h1>
+            {/* Product Name */}
+            <h1 className="product-details-title">
+              {product.name}
+            </h1>
 
-            <p className="product-details-price">
-              {Number(product.price).toFixed(2)} ETB
-            </p>
+            {/* Price */}
+            <div className="product-details-price">
+              {Number(product.price).toFixed(2)}
+              <span> ETB</span>
+            </div>
 
-            <p className="product-stock">
-              {stock > 0
-                ? `${stock} in stock`
-                : 'Out of stock'}
-            </p>
+            {/* Stock */}
+            <div
+              className={
+                stock > 0
+                  ? 'product-stock available'
+                  : 'product-stock unavailable'
+              }
+            >
+              {stock > 0 ? (
+                <>
+                  <Check size={17} />
+                  {stock} in stock
+                </>
+              ) : (
+                'Out of stock'
+              )}
+            </div>
 
+            {/* Description */}
             <div className="product-description">
 
               <h3>Description</h3>
 
               <p>
                 {product.description ||
-                  'No description available.'}
+                  'No description available for this product.'}
               </p>
 
             </div>
@@ -177,17 +278,23 @@ function ProductDetails() {
                 <div className="quantity-control">
 
                   <button
+                    type="button"
                     onClick={decreaseQuantity}
                     disabled={quantity <= 1}
+                    aria-label="Decrease quantity"
                   >
                     <Minus size={17} />
                   </button>
 
-                  <span>{quantity}</span>
+                  <span>
+                    {quantity}
+                  </span>
 
                   <button
+                    type="button"
                     onClick={increaseQuantity}
                     disabled={quantity >= stock}
+                    aria-label="Increase quantity"
                   >
                     <Plus size={17} />
                   </button>
@@ -201,19 +308,33 @@ function ProductDetails() {
             <div className="product-details-actions">
 
               <button
-                className="favorite-button"
-                onClick={() => alert('Favorites will be connected next.')}
+                type="button"
+                className={`favorite-button ${
+                  isFavorite ? 'favorite-active' : ''
+                }`}
+                onClick={handleFavorite}
               >
-                <Heart size={19} />
-                Favorite
+                <Heart
+                  size={19}
+                  fill={
+                    isFavorite
+                      ? 'currentColor'
+                      : 'none'
+                  }
+                />
+
+                {isFavorite
+                  ? 'Remove Favorite'
+                  : 'Add to Favorites'}
               </button>
 
               <button
+                type="button"
                 className="add-details-cart-button"
                 onClick={handleAddToCart}
                 disabled={stock <= 0}
               >
-                <ShoppingCart size={19} />
+                <ShoppingCart size={20} />
 
                 {stock > 0
                   ? 'Add to Cart'
