@@ -278,7 +278,7 @@ const getPaymentByOrder = async (
 };
 
 
-// ADMIN: all payments
+/// ADMIN: all payments
 const getAllPayments = async () => {
 
     const [rows] = await db.query(`
@@ -290,6 +290,7 @@ const getAllPayments = async () => {
             p.amount,
             p.status,
             p.transaction_id,
+            p.paid_at,
             p.paid_at
         FROM payments p
         JOIN orders o
@@ -301,7 +302,6 @@ const getAllPayments = async () => {
 
     return rows;
 };
-
 
 module.exports = {
     createPayment,

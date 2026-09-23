@@ -83,7 +83,22 @@ const loginUser = async (email, password) => {
         role: user.role
     };
 };
+const getProfile = async (userId) => {
+    const [users] = await db.query(
+        `SELECT id, name, email, phone, address, role
+         FROM users
+         WHERE id = ?`,
+        [userId]
+    );
+
+    if (users.length === 0) {
+        throw new Error('User not found');
+    }
+
+    return users[0];
+};
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    getProfile
 };

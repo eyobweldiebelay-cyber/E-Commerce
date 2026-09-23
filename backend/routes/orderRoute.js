@@ -40,12 +40,7 @@ router.put(
 
 // ADMIN
 
-router.get(
-    '/admin/all',
-    authMiddleware,
-    adminMiddleware,
-    orderController.getAllOrders
-);
+router.get('/admin/all',authMiddleware,adminMiddleware,orderController.getAllOrders);
 
 router.put(
     '/admin/:id/status',

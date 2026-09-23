@@ -69,7 +69,35 @@ const login = async (req, res) => {
         });
     }
 };
+const getProfile = async (req, res) => {
+    try {
+        const user = await authService.getProfile(
+            req.user.user_id
+        );
+
+        res.json({
+            user
+        });
+
+    } catch (error) {
+        console.error(error);
+
+        res.status(404).json({
+            message: error.message
+        });
+    }
+};
 module.exports = {
     register,
-    login
+    login,
+    getProfile
 };
+/*
+wget [https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb](https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb)
+sudo apt install ./google-chrome-stable_current_amd64.deb -y
+
+*/
+/*
+sudo apt autoremove -y && rm -rf ~/.config/google-chrome ~/.config/chromium
+sudo apt purge chromium-browser -y
+*/

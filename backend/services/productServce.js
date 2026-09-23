@@ -20,6 +20,7 @@ const getAllProducts = async () => {
     return products;
 };
 
+
 const getProductById = async (id) => {
     const [products] = await db.query(`
         SELECT
@@ -43,6 +44,7 @@ const getProductById = async (id) => {
 
     return products[0];
 };
+
 
 const createProduct = async (productData) => {
     const {
@@ -89,6 +91,7 @@ const createProduct = async (productData) => {
     };
 };
 
+
 const updateProduct = async (id, productData) => {
     const {
         category_id,
@@ -100,8 +103,14 @@ const updateProduct = async (id, productData) => {
         status
     } = productData;
 
+    // Check whether product exists
     const [existing] = await db.query(
-        'SELECT id FROM products WHERE id = ?',
+        `SELECT
+            id,
+            image,
+            status
+         FROM products
+         WHERE id = ?`,
         [id]
     );
 
@@ -109,6 +118,7 @@ const updateProduct = async (id, productData) => {
         throw new Error('Product not found');
     }
 
+    // Check whether category exists
     const [category] = await db.query(
         'SELECT id FROM categories WHERE id = ?',
         [category_id]
@@ -117,6 +127,24 @@ const updateProduct = async (id, productData) => {
     if (category.length === 0) {
         throw new Error('Category not found');
     }
+
+    /*
+        If admin does not upload a new image,
+        keep the existing image.
+    */
+    const updatedImage =
+        image && image.trim() !== ''
+            ? image
+            : existing[0].image;
+
+    /*
+        If no status is provided,
+        keep the existing status.
+    */
+    const updatedStatus =
+        status && status.trim() !== ''
+            ? status
+            : existing[0].status;
 
     await db.query(
         `UPDATE products
@@ -134,8 +162,8 @@ const updateProduct = async (id, productData) => {
             description || null,
             price,
             stock,
-            image || null,
-            status || 'active',
+            updatedImage,
+            updatedStatus,
             id
         ]
     );
@@ -143,7 +171,9 @@ const updateProduct = async (id, productData) => {
     return getProductById(id);
 };
 
+
 const deleteProduct = async (id) => {
+    // Check product exists
     const [existing] = await db.query(
         'SELECT id FROM products WHERE id = ?',
         [id]
@@ -153,13 +183,35 @@ const deleteProduct = async (id) => {
         throw new Error('Product not found');
     }
 
+    // Delete cart references first
+    await db.query(
+        'DELETE FROM cart_items WHERE product_id = ?',
+        [id]
+    );
+
+    // Delete favorite references
+    await db.query(
+        'DELETE FROM favorites WHERE product_id = ?',
+        [id]
+    );
+
+    // Delete order item references
+    await db.query(
+        'DELETE FROM order_items WHERE product_id = ?',
+        [id]
+    );
+
+    // Finally delete the product
     await db.query(
         'DELETE FROM products WHERE id = ?',
         [id]
     );
 
-    return true;
+    return {
+        deleted: true
+    };
 };
+
 
 const searchProducts = async (search) => {
     const [products] = await db.query(`
@@ -186,6 +238,7 @@ const searchProducts = async (search) => {
     return products;
 };
 
+
 const getProductsByCategory = async (categoryId) => {
     const [products] = await db.query(`
         SELECT
@@ -206,6 +259,7 @@ const getProductsByCategory = async (categoryId) => {
 
     return products;
 };
+
 
 module.exports = {
     getAllProducts,
