@@ -13,28 +13,21 @@ const upload = require('../middleware/uploadMiddleware');
 // GET ALL CATEGORIES
 // ========================================
 
-router.get(
-    '/',
-    categoryController.getCategories
-);
+router.get('/', categoryController.getCategories);
 
 
 // ========================================
 // GET ONE CATEGORY
 // ========================================
 
-router.get(
-    '/:id',
-    categoryController.getCategory
-);
+router.get('/:id', categoryController.getCategory);
 
 
 // ========================================
 // CREATE CATEGORY
 // ========================================
 
-router.post(
-    '/',
+router.post('/',
     authMiddleware,
     adminMiddleware,
     upload.single('image'),
@@ -46,8 +39,7 @@ router.post(
 // UPDATE CATEGORY
 // ========================================
 
-router.put(
-    '/:id',
+router.put('/:id',
     authMiddleware,
     adminMiddleware,
     upload.single('image'),
@@ -59,8 +51,7 @@ router.put(
 // DELETE CATEGORY
 // ========================================
 
-router.delete(
-    '/:id',
+router.delete('/:id',
     authMiddleware,
     adminMiddleware,
     categoryController.deleteCategory

@@ -183,10 +183,7 @@ const updateCategory = async (
 
     // Update category
 
-    await db.query(
-        `
-        UPDATE categories
-        SET
+    await db.query(` UPDATE categories SET
             name = ?,
             image = ?
         WHERE id = ?

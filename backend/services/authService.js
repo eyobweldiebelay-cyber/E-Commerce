@@ -5,21 +5,13 @@ const registerUser = async (userData) => {
     const { name, email, password, phone, address } = userData;
 
     // Check if email already exists
-    const [existingUser] = await db.query(
-        'SELECT id FROM users WHERE email = ?',
-        [email]
-    );
-
+    const [existingUser] = await db.query('SELECT id FROM users WHERE email = ?', [email]);
     if (existingUser.length > 0) {
         throw new Error('Email already exists');
     }
-
     // Check if phone already exists
     if (phone) {
-        const [existingPhone] = await db.query(
-            'SELECT id FROM users WHERE phone = ?',
-            [phone]
-        );
+        const [existingPhone] = await db.query('SELECT id FROM users WHERE phone = ?',[phone]);
 
         if (existingPhone.length > 0) {
             throw new Error('Phone number already exists');
@@ -31,9 +23,7 @@ const registerUser = async (userData) => {
 
     // Insert user
     const [result] = await db.query(
-        `INSERT INTO users
-        (name, email, password, phone, address)
-        VALUES (?, ?, ?, ?, ?)`,
+        `INSERT INTO users (name, email, password, phone, address) VALUES (?, ?, ?, ?, ?)`,
         [
             name,
             email,
@@ -55,10 +45,8 @@ const registerUser = async (userData) => {
 
 //loginUser function can be implemented here in the future
 const loginUser = async (email, password) => {
-    const [users] = await db.query(
-        `SELECT id, name, email, password, phone, address, role
-         FROM users
-         WHERE email = ?`,
+    const [users] = await db.query(`SELECT id, name, email, password, phone, address, role FROM users
+          WHERE email = ?`,
         [email]
     );
 

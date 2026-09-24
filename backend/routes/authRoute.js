@@ -9,10 +9,5 @@ router.post('/register', authController.register);
 //login route
 router.post('/login', authController.login);
 //getProfile
-
-router.get(
-    '/profile',
-    authmiddleware,
-    authController.getProfile
-);
+router.get('/profile', authmiddleware, authController.getProfile);
 module.exports = router;
