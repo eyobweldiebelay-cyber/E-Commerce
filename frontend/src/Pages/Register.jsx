@@ -21,18 +21,14 @@ function Register() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (event) => {
-    setFormData({
-      ...formData,
+  const handleChange = (event) => {setFormData({...formData,
       [event.target.name]: event.target.value
     });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    setError('');
-
+     setError('');
     if (
       !formData.name ||
       !formData.email ||
@@ -44,12 +40,10 @@ function Register() {
       setError('Please fill in all fields.');
       return;
     }
-
-    if (formData.password !== formData.confirmPassword) {
+    if(formData.password !== formData.confirmPassword) {
       setError('Passwords do not match.');
-      return;
+        return;
     }
-
     try {
       setLoading(true);
 
